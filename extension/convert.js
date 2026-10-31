@@ -52,7 +52,7 @@
     const key = 'job_' + jobId;
     const job = jobId && (await chrome.storage.session.get(key))[key];
     if (!job) {
-      setStatus('Kein Clip gefunden. Bitte Clippy über das Symbol in der Leiste neu starten.', 'error');
+      setStatus('Kein Clip gefunden. Bitte Shorty über das Symbol in der Leiste neu starten.', 'error');
       return;
     }
 
@@ -94,7 +94,7 @@
   }
 
   run().catch((e) => {
-    document.title = 'Fehler – Clippy';
+    document.title = 'Fehler – Shorty';
     setStatus(e.message || String(e), 'error');
   });
 })();

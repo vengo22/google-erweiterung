@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Clippy – Bearbeiten</title>
+  <title>Shorty – Bearbeiten</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="edit.css">
 </head>
 <body>
   <main>
     <header class="top">
-      <div class="brand"><img src="icons/icon-48.png" alt="">Clippy</div>
+      <div class="brand"><img src="icons/icon-48.png" alt="">Shorty</div>
       <div class="clipinfo">
         <div id="title" class="title">Clip</div>
         <div id="streamer" class="muted small"></div>
@@ -82,6 +82,14 @@
             <div class="segmented" id="layout">
               <button type="button" data-value="1">1 Fenster<small>nur Gameplay</small></button>
               <button type="button" data-value="2">2 Fenster<small>Webcam + Gameplay</small></button>
+            </div>
+
+            <div id="cam-pos-section" class="hidden">
+              <div class="label">Webcam</div>
+              <div class="segmented" id="cam-pos">
+                <button type="button" data-value="top">Oben</button>
+                <button type="button" data-value="bottom">Unten</button>
+              </div>
             </div>
 
             <div class="label">Vorschau</div>

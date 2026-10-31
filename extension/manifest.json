@@ -1,13 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "Clippy - Shorts erstellen",
-  "short_name": "Clippy",
-  "version": "1.1.0",
-  "description": "Twitch-Clips herunterladen, schneiden und ins Hochformat bringen. Danach läuft der Clip in jedem Schnittprogramm.",
+  "name": "Shorty - Shorts erstellen",
+  "short_name": "Shorty",
+  "version": "1.2.0",
+  "description": "Twitch-Clips herunterladen, schneiden und ins Hochformat bringen. Direkt bereit zum Hochladen. Alles kostenlos und ohne Anmeldung.",
   "minimum_chrome_version": "116",
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Clippy",
+    "default_title": "Shorty",
     "default_icon": {
       "16": "icons/icon-16.png",
       "32": "icons/icon-32.png",

@@ -10,6 +10,7 @@
   let src = { w: 1920, h: 1080 }; // Größe des Originals
   let out = { w: 1080, h: 1920 }; // Größe des fertigen Videos
   let layout = '1';
+  let camPos = 'top'; // Webcam im fertigen Video oben oder unten
   let mode = 'portrait'; // oder 'landscape'
   let timeline = null;
   const rects = { game: null, cam: null }; // in Original-Pixeln
@@ -48,9 +49,16 @@
   function targets() {
     if (layout === '1' || !rects.cam) return { game: { x: 0, y: 0, w: out.w, h: out.h } };
     const camH = Math.round(out.w / (rects.cam.w / rects.cam.h) / 2) * 2;
+    const gameH = out.h - camH;
+    if (camPos === 'bottom') {
+      return {
+        game: { x: 0, y: 0, w: out.w, h: gameH },
+        cam: { x: 0, y: gameH, w: out.w, h: camH },
+      };
+    }
     return {
       cam: { x: 0, y: 0, w: out.w, h: camH },
-      game: { x: 0, y: camH, w: out.w, h: out.h - camH },
+      game: { x: 0, y: camH, w: out.w, h: gameH },
     };
   }
 
@@ -112,6 +120,8 @@
     if (rects.cam) rects.cam = limitCam(rects.cam);
     syncGame();
     for (const b of $('layout').querySelectorAll('button')) b.setAttribute('aria-pressed', String(b.dataset.value === layout));
+    for (const b of $('cam-pos').querySelectorAll('button')) b.setAttribute('aria-pressed', String(b.dataset.value === camPos));
+    $('cam-pos-section').classList.toggle('hidden', layout !== '2');
     renderOverlay();
     saveCrop();
   }
@@ -128,6 +138,7 @@
       const saved = (await chrome.storage.local.get(key))[key];
       if (!saved) return;
       if (job.layout == null && saved.layout) layout = saved.layout;
+      if (saved.camPos) camPos = saved.camPos;
       const scale = (r) => r && { x: r.x * src.w, y: r.y * src.h, w: r.w * src.w, h: r.h * src.h };
       rects.game = scale(saved.game);
       rects.cam = scale(saved.cam);
@@ -140,7 +151,7 @@
     saveTimer = setTimeout(() => {
       const norm = (r) => r && { x: r.x / src.w, y: r.y / src.h, w: r.w / src.w, h: r.h / src.h };
       try {
-        chrome.storage.local.set({ [cropKey()]: { layout, game: norm(rects.game), cam: norm(rects.cam) } });
+        chrome.storage.local.set({ [cropKey()]: { layout, camPos, game: norm(rects.game), cam: norm(rects.cam) } });
       } catch (e) { /* egal */ }
     }, 300);
   }
@@ -303,7 +314,7 @@
     $('status').classList.add('hidden');
     $('video').pause();
     setBar('export', 0);
-    document.title = 'Wird erstellt … – Clippy';
+    document.title = 'Wird erstellt … – Shorty';
 
     try {
       const options = { cuts: timeline.removed() };
@@ -319,10 +330,10 @@
       const url = URL.createObjectURL(blob);
       await chrome.downloads.download({ url, filename: name + '.mp4', conflictAction: 'uniquify' });
       setTimeout(() => URL.revokeObjectURL(url), 60000);
-      document.title = 'Fertig ✓ – Clippy';
+      document.title = 'Fertig ✓ – Shorty';
       setStatus('Fertig! „' + name + '.mp4“ liegt in deinem Download-Ordner. Du kannst noch etwas ändern und erneut erstellen oder diesen Tab schließen.', 'ok');
     } catch (e) {
-      document.title = 'Fehler – Clippy';
+      document.title = 'Fehler – Shorty';
       setStatus(e.message || String(e), 'error');
     } finally {
       $('export').disabled = false;
@@ -366,7 +377,7 @@
     job = jobId && (await chrome.storage.session.get(key))[key];
     if (!job) {
       $('loading').classList.add('hidden');
-      setStatus('Kein Clip gefunden. Bitte Clippy über das Symbol in der Leiste neu starten.', 'error');
+      setStatus('Kein Clip gefunden. Bitte Shorty über das Symbol in der Leiste neu starten.', 'error');
       return;
     }
     $('title').textContent = job.title || 'Clip';
@@ -374,7 +385,7 @@
     $('filename').value = cleanName(job.filename);
     mode = job.mode === 'landscape' ? 'landscape' : 'portrait';
     if (job.layout) layout = String(job.layout);
-    document.title = (mode === 'portrait' ? 'Hochformat' : 'Schneiden') + ' – Clippy';
+    document.title = (mode === 'portrait' ? 'Hochformat' : 'Schneiden') + ' – Shorty';
 
     buffer = await download(job.url, (p, bytes) => {
       if (p === null) {
@@ -426,6 +437,12 @@
       layout = b.dataset.value;
       applyLayout();
     });
+    $('cam-pos').addEventListener('click', (e) => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      camPos = b.dataset.value;
+      applyLayout();
+    });
     $('export').addEventListener('click', exportVideo);
     $('filename').addEventListener('keydown', (e) => { if (e.key === 'Enter') exportVideo(); });
     window.addEventListener('resize', () => {
@@ -438,7 +455,7 @@
   bind();
   run().catch((e) => {
     $('loading').classList.add('hidden');
-    document.title = 'Fehler – Clippy';
+    document.title = 'Fehler – Shorty';
     setStatus(e.message || String(e), 'error');
   });
 })();

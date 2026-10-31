@@ -105,10 +105,10 @@
     hint.className = 'note';
     if (isPortrait()) {
       hint.textContent = settings.layout === '2'
-        ? 'Im nächsten Schritt ziehst du je einen Rahmen um die Webcam und ums Gameplay. Clippy setzt beides übereinander.'
+        ? 'Im nächsten Schritt ziehst du je einen Rahmen um die Webcam und ums Gameplay. Shorty setzt beides übereinander.'
         : 'Im nächsten Schritt wählst du aus, welcher Ausschnitt vom Gameplay ins Hochformat kommt.';
     } else if (needsConversion()) {
-      hint.textContent = 'Twitch liefert diese Qualität als ' + selected.codec + '. Clippy wandelt sie nach dem Download automatisch in H.264 um – das dauert nur ein paar Sekunden.';
+      hint.textContent = 'Twitch liefert diese Qualität als ' + selected.codec + '. Shorty wandelt sie nach dem Download automatisch in H.264 um – das dauert nur ein paar Sekunden.';
     } else if (settings.format === 'original' && selected && selected.codec !== 'H.264') {
       hint.classList.add('warn');
       hint.textContent = selected.codec + ' wird von vielen Schnittprogrammen nicht erkannt (nur Ton). Wähle oben „H.264“, wenn du den Clip schneiden willst.';
