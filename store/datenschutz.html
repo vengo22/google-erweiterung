@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clippy – Datenschutz</title>
+  <style>
+    :root { --bg: #ffffff; --text: #1d2026; --muted: #5d6470; --accent: #6a4ff0; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #121318; --text: #eceef3; --muted: #9aa0ad; --accent: #9580ff; } }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { max-width: 680px; margin: 0 auto; padding: 40px 16px 64px; }
+    h1 { font-size: 28px; margin: 0 0 4px; }
+    h2 { font-size: 18px; margin: 28px 0 6px; }
+    .muted { color: var(--muted); }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Datenschutzerklärung – Clippy</h1>
+  <p class="muted">Stand: 19. Oktober 2026</p>
+
+  <h2>Kurz gesagt</h2>
+  <p>Clippy sammelt keine persönlichen Daten, hat keine Konten, kein Tracking und keine Werbung. Es werden keine Daten an den Entwickler oder an Dritte gesendet.</p>
+
+  <h2>Was die Erweiterung tut</h2>
+  <p>Wenn du auf das Clippy-Symbol klickst, liest die Erweiterung die Adresse des aktuell geöffneten Tabs, um zu erkennen, ob es ein Twitch-Clip ist. Anschließend fragt sie bei Twitch (gql.twitch.tv) die öffentlich verfügbaren Informationen zu diesem Clip ab (Titel, Kanal, verfügbare Qualitäten) und lädt die Videodatei von Twitchs Servern herunter.</p>
+  <p>Bei diesen Anfragen gelten die Datenschutzbestimmungen von Twitch. Clippy sendet dabei nur die Clip-Kennung, keine Daten über dich.</p>
+
+  <h2>Umwandlung</h2>
+  <p>Die Umwandlung in H.264 und das Zuschneiden ins Hochformat finden vollständig auf deinem eigenen Gerät statt. Das Video wird nirgendwo hochgeladen.</p>
+
+  <h2>Gespeicherte Einstellungen</h2>
+  <p>Clippy merkt sich deine zuletzt gewählten Einstellungen (Format, Ausrichtung, Qualität) und für jeden Kanal die Position deiner Zuschneide-Rahmen im Hochformat über die Chrome-Speicherfunktion, damit du sie nicht jedes Mal neu wählen musst. Diese Einstellungen enthalten keine persönlichen Daten.</p>
+
+  <h2>Kontakt</h2>
+  <p>Fragen zum Datenschutz: <a href="mailto:[DEINE-E-MAIL]">[DEINE-E-MAIL]</a></p>
+</main>
+</body>
+</html>

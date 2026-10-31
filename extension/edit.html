@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clippy – Bearbeiten</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="edit.css">
+</head>
+<body>
+  <main>
+    <header class="top">
+      <div class="brand"><img src="icons/icon-48.png" alt="">Clippy</div>
+      <div class="clipinfo">
+        <div id="title" class="title">Clip</div>
+        <div id="streamer" class="muted small"></div>
+      </div>
+    </header>
+
+    <!-- 1. Clip laden -->
+    <section id="loading" class="panel narrow">
+      <div class="row"><span>Clip herunterladen</span><span class="pct" id="pct-load"></span></div>
+      <div class="progress"><div id="bar-load"></div></div>
+    </section>
+
+    <!-- 2. Bearbeiten -->
+    <section id="editor" class="hidden">
+      <div class="workspace">
+        <div class="source">
+          <div class="stage" id="stage">
+            <video id="video" playsinline preload="auto"></video>
+            <div id="overlay"></div>
+          </div>
+
+          <!-- Zeitleiste -->
+          <div class="transport">
+            <button class="icon-btn" id="play" type="button" title="Abspielen (Leertaste)">
+              <svg id="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              <svg id="icon-pause" class="hidden" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z" /></svg>
+            </button>
+            <div class="timeline" id="timeline" title="Klicken oder ziehen: Stelle wählen · Strg/⌘ + Mausrad oder zwei Finger: zoomen">
+              <canvas id="wave"></canvas>
+              <div id="parts"></div>
+              <div id="cut-marks"></div>
+              <div id="playhead"></div>
+            </div>
+          </div>
+          <div class="overview hidden" id="overview" title="Sichtbaren Ausschnitt verschieben">
+            <div id="view-window"></div>
+          </div>
+          <div class="timeinfo muted small">
+            <span id="time">0:00</span>
+            <div class="zoom-ctrl">
+              <button type="button" class="mini" id="tl-zoom-out" title="Herauszoomen (−)" aria-label="Herauszoomen">−</button>
+              <span id="tl-zoom-label">Ganzer Clip</span>
+              <button type="button" class="mini" id="tl-zoom-in" title="In die Tonspur hineinzoomen (+)" aria-label="Hineinzoomen">+</button>
+              <button type="button" class="mini wide" id="tl-zoom-fit" title="Ganzen Clip zeigen (0)">Alles</button>
+            </div>
+            <span id="new-length"></span>
+          </div>
+
+          <div class="cut-actions">
+            <button class="btn" id="add-cut" type="button" title="Taste S">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12" /></svg>
+              Schnitt setzen
+            </button>
+            <button class="btn secondary" id="delete-part" type="button" title="Entf-Taste" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4h6v3" /></svg>
+              <span id="delete-part-label">Teil löschen</span>
+            </button>
+            <button class="btn secondary" id="undo" type="button" title="Letzten Schritt rückgängig (⌘/Strg + Z)" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5" /><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11" /></svg>
+              Rückgängig
+            </button>
+          </div>
+          <p class="muted small help" id="help"></p>
+        </div>
+
+        <aside class="side">
+          <div id="layout-section">
+            <div class="label">Fenster</div>
+            <div class="segmented" id="layout">
+              <button type="button" data-value="1">1 Fenster<small>nur Gameplay</small></button>
+              <button type="button" data-value="2">2 Fenster<small>Webcam + Gameplay</small></button>
+            </div>
+
+            <div class="label">Vorschau</div>
+            <canvas id="preview" width="270" height="480"></canvas>
+          </div>
+
+
+          <div id="silence-box" class="hidden">
+            <div class="label">Leerstellen entfernen</div>
+            <div class="slider">
+              <div class="row small"><span>Mindestens so lang</span><span id="silence-length-value">1,0 s</span></div>
+              <input id="silence-length" type="range" min="0.5" max="3" step="0.1" value="1">
+            </div>
+            <div class="slider">
+              <div class="row small"><span>Was zählt als still?</span><span id="silence-level-value">normal</span></div>
+              <input id="silence-level" type="range" min="-55" max="-25" step="1" value="-40">
+            </div>
+            <button class="btn secondary" id="find-silence" type="button">Leerstellen finden und entfernen</button>
+            <p id="silence-result" class="muted small"></p>
+          </div>
+
+          <div class="label">Dateiname</div>
+          <div class="filename">
+            <input id="filename" type="text" spellcheck="false" autocomplete="off">
+            <span>.mp4</span>
+          </div>
+
+          <button class="btn" id="export" type="button">Video erstellen</button>
+          <div id="export-progress" class="hidden">
+            <div class="row"><span>Wird erstellt …</span><span class="pct" id="pct-export"></span></div>
+            <div class="progress"><div id="bar-export"></div></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <p id="status" class="note hidden"></p>
+  </main>
+
+  <script src="lib/mp4box.all.min.js"></script>
+  <script src="lib/mp4-muxer.js"></script>
+  <script src="transcode.js"></script>
+  <script src="timeline.js"></script>
+  <script src="edit.js"></script>
+</body>
+</html>

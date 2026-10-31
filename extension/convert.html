@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clippy – Umwandlung</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="convert.css">
+</head>
+<body>
+  <main>
+    <header class="brand"><img src="icons/icon-48.png" alt="">Clippy</header>
+
+    <div class="clip">
+      <img id="thumb" alt="">
+      <div>
+        <div id="title" class="title">Clip</div>
+        <div id="streamer" class="muted small"></div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li id="step-load">
+        <div class="row"><span>Clip herunterladen</span><span class="pct" id="pct-load"></span></div>
+        <div class="progress"><div id="bar-load"></div></div>
+      </li>
+      <li id="step-convert">
+        <div class="row"><span>In H.264 umwandeln</span><span class="pct" id="pct-convert"></span></div>
+        <div class="progress"><div id="bar-convert"></div></div>
+      </li>
+    </ol>
+
+    <p id="status" class="note">Bitte diesen Tab offen lassen, bis der Download fertig ist.</p>
+  </main>
+
+  <script src="lib/mp4box.all.min.js"></script>
+  <script src="lib/mp4-muxer.js"></script>
+  <script src="transcode.js"></script>
+  <script src="convert.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Clippy</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="brand"><img src="icons/icon-48.png" alt="">Clippy</header>
+
+  <!-- Kein Clip offen: Link einfügen -->
+  <section id="empty" class="hidden">
+    <p class="muted">Öffne einen Twitch-Clip oder füge hier den Link ein:</p>
+    <form id="link-form">
+      <input id="link" type="text" placeholder="https://clips.twitch.tv/…" autocomplete="off" spellcheck="false">
+      <button class="btn" type="submit">Clip laden</button>
+    </form>
+  </section>
+
+  <section id="loading" class="hidden">
+    <div class="spinner"></div>
+    <p class="muted center">Clip wird geladen …</p>
+  </section>
+
+  <section id="error" class="hidden">
+    <p class="note error" id="error-text"></p>
+    <button class="btn secondary" id="retry" type="button">Anderen Link eingeben</button>
+  </section>
+
+  <section id="clip" class="hidden">
+    <div class="card">
+      <img id="thumb" alt="">
+      <div class="card-text">
+        <div id="title" class="title"></div>
+        <div id="meta" class="muted small"></div>
+      </div>
+    </div>
+
+    <div class="filename">
+      <input id="filename" type="text" spellcheck="false" autocomplete="off" aria-label="Dateiname" title="Dateiname">
+      <span>.mp4</span>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="download" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14" /></svg>
+        <span id="download-label">Herunterladen</span>
+      </button>
+      <button class="icon-btn" id="cut-btn" type="button" title="Schneiden">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12" /></svg>
+      </button>
+      <button class="icon-btn" id="settings-toggle" type="button" aria-expanded="false" aria-controls="settings" title="Einstellungen">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
+      </button>
+    </div>
+    <p id="summary" class="summary muted small"></p>
+    <p id="done" class="note ok hidden"></p>
+
+    <div id="settings" class="settings hidden">
+      <div id="format-wrap">
+      <div class="label">Format</div>
+      <div class="segmented" id="format">
+        <button type="button" data-value="h264">H.264<small>läuft überall</small></button>
+        <button type="button" data-value="original">Original<small>wie von Twitch</small></button>
+      </div>
+      </div>
+
+      <div id="orientation-wrap">
+        <div class="label">Ausrichtung</div>
+        <div class="segmented" id="orientation">
+          <button type="button" data-value="landscape">Querformat</button>
+          <button type="button" data-value="portrait">Hochformat</button>
+        </div>
+      </div>
+
+      <div id="layout-wrap" class="hidden">
+        <div class="label">Fenster</div>
+        <div class="segmented" id="layout">
+          <button type="button" data-value="1">1 Fenster<small>nur Gameplay</small></button>
+          <button type="button" data-value="2">2 Fenster<small>Webcam + Gameplay</small></button>
+        </div>
+      </div>
+
+      <div class="label">Qualität</div>
+      <div id="qualities" class="qualities" role="radiogroup"></div>
+
+      <p id="hint" class="note hidden"></p>
+    </div>
+  </section>
+
+  <script src="twitch.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
